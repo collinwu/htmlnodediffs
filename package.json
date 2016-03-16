@@ -1,0 +1,23 @@
+{
+  "name": "htmlnodediffs",
+  "version": "1.0.0",
+  "description": "Compare sandbox markup to production markup",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/collinwu/htmlnodediffs.git"
+  },
+  "author": "collinwu@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/collinwu/htmlnodediffs/issues"
+  },
+  "homepage": "https://github.com/collinwu/htmlnodediffs#readme",
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "request": "^2.69.0"
+  }
+}
