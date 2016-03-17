@@ -69,6 +69,7 @@ function getAndStorePageData(loop, routesArray, routeIndex, host, hostObj) {
       var metaClass = $(this).attr().class;
       var metaName = $(this).attr().name;
       var metaContent = $(this).attr().content;
+      var metaProperty = $(this).attr().property;
       var metaContainsHost = false;
 
       if (!hostObj[route]) {
@@ -80,9 +81,9 @@ function getAndStorePageData(loop, routesArray, routeIndex, host, hostObj) {
       if (metaName) {
         // If yes, DO NOT PUSH TO ROUTE ARRAY
         if (metaName.indexOf('msapplication') !== -1 || metaName.indexOf('twitter') !== -1) {
-
-        // ELSE IF !msapplication AND !twitter
+          // SKIP
         } else {
+        // ELSE IF !msapplication AND !twitter
           if (typeof metaContent === 'string') {
             var partialEngadget = '.engadget.com'
             metaContainsHost = metaContent.indexOf(partialEngadget) !== -1;
@@ -98,19 +99,24 @@ function getAndStorePageData(loop, routesArray, routeIndex, host, hostObj) {
           hostObj[route][JSON.stringify(attrKeyObj)] = $(this).attr();
         }
       } else {
-        if (typeof metaContent === 'string') {
-          var partialEngadget = '.engadget.com'
-          metaContainsHost = metaContent.indexOf(partialEngadget) !== -1;
-          
-          if (metaContainsHost) {
-            var indexOfSlice = $(this).attr().content.indexOf(partialEngadget) + 13;
-            $(this).attr().content = $(this).attr().content.slice(indexOfSlice);
+        if (metaProperty && metaProperty.indexOf('og:image') !== -1) {
+          // SKIP
+        } else {
+          if (typeof metaContent === 'string') {
+            var partialEngadget = '.engadget.com'
+            metaContainsHost = metaContent.indexOf(partialEngadget) !== -1;
+            
+            if (metaContainsHost) {
+              var indexOfSlice = $(this).attr().content.indexOf(partialEngadget) + 13;
+              $(this).attr().content = $(this).attr().content.slice(indexOfSlice);
+            }
           }
+          
+          var attrKeyObj = _.merge({}, $(this).attr());
+          delete attrKeyObj.content;
+          hostObj[route][JSON.stringify(attrKeyObj)] = $(this).attr();
         }
-        
-        var attrKeyObj = _.merge({}, $(this).attr());
-        delete attrKeyObj.content;
-        hostObj[route][JSON.stringify(attrKeyObj)] = $(this).attr();
+
       }
     });
     loop.next();
